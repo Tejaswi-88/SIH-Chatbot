@@ -1,0 +1,35 @@
+services:
+  backend:
+    build: ./backend
+    container_name: langchatbot-backend
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app   # live reload for dev
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    restart: always
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./frontend
+    container_name: langchatbot-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: always
+
+  mongo:
+    image: mongo:7.0
+    container_name: langchatbot-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+volumes:
+  mongo_data:
