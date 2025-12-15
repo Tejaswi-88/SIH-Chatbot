@@ -1,230 +1,184 @@
- sih-chatbot/
-│
-├── backend/
-│   ├── app/
-│   │   ├── main.py                        # FastAPI entry point
-│   │   ├── routes/
-│   │   │   ├── __init__.py
-│   │   │   ├── chat_routes.py             # Chat endpoint (handles user queries)
-│   │   │   ├── admin_routes.py            # File upload (PDF/Excel) & dashboard APIs
-│   │   │   └── health_routes.py           # Health check endpoint
-│   │   ├── models/
-│   │   │   ├── __init__.py
-│   │   │   ├── message_model.py           # Chat messages schema
-│   │   │   ├── user_model.py              # User schema
-│   │   │   └── document_model.py          # Knowledge base doc schema (PDF/Excel)
-│   │   ├── db/
-│   │   │   ├── connection.py              # MongoDB connection logic (Motor)
-│   │   │   └── queries.py                 # CRUD and aggregation operations
-│   │   ├── services/
-│   │   │   ├── language_service.py        # Language detection + transliteration
-│   │   │   ├── translation_service.py     # Translation between languages
-│   │   │   ├── nlp_service.py             # Intent detection, entity recognition
-│   │   │   ├── rag_service.py             # Embedding, FAISS search, retrieval
-│   │   │   ├── pdf_parser.py              # Extract text from PDFs
-│   │   │   ├── excel_parser.py            # Read and structure data from Excel
-│   │   │   └── tts_service.py             # Optional: text-to-speech output
-│   │   ├── utils/
-│   │   │   ├── helpers.py                 # Utility helpers (formatting, cleaning)
-│   │   │   ├── logger.py                  # Logging setup
-│   │   │   └── config_loader.py           # Read .env / config variables
-│   │   ├── config.py                      # Centralized settings/configuration
-│   │   └── __init__.py
-│   │
-│   ├── data/                              # Sample data / test docs / embeddings
-│   │   ├── faiss_index/
-│   │   ├── uploads/
-│   │   └── samples/
-│   ├── venv/
-│   ├── .gitignore
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   └── README.md
-│
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── ChatWindow.jsx             # Chat UI component
-│   │   │   ├── MessageBubble.jsx          # Display each message
-│   │   │   ├── LanguageSelector.jsx       # Dropdown for language preference
-│   │   │   └── FileUpload.jsx             # Admin upload component (PDF/Excel)
-│   │   ├── pages/
-│   │   │   ├── Chat.jsx                   # Main chatbot page
-│   │   │   └── AdminDashboard.jsx         # File upload + logs dashboard
-│   │   ├── App.js
-│   │   ├── api.js                         # Handles Axios API calls to backend
-│   │   └── i18n/                          # Frontend multilingual setup (optional)
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── Dockerfile
-│   └── README.md
-│
-├── logs/
-│   ├── backend.log
-│   ├── frontend.log
-│   └── access.log
-│
-├── scripts/
-│   ├── ingest_docs.py                     # Standalone script to populate FAISS DB
-│   ├── test_api.py                        # Local script to test backend endpoints
-│   └── init_setup.sh                      # Optional automation script for setup
-│
-├── docs/
-│   ├── architecture_diagram.png
-│   ├── api_endpoints.md
-│   ├── workflow_explanation.md
-│   └── setup_guide.md
-│
-├── .dockerignore
-├── .env
-├── docker-compose.yml
-└── README.md
+# SIH Chatbot
 
+A full-stack AI-powered chatbot platform with document ingestion, multi-format file parsing, and a Google Gemini-powered conversational backend. Designed for rapid deployment, local development, and scalable architecture.
 
+---
 
+## Table of Contents
 
+- [Project Overview](#project-overview)  
+- [Features](#features)  
+- [Technology Stack](#technology-stack)  
+- [Project Structure](#project-structure)  
+- [Setup & Installation](#setup--installation)  
+- [Environment Variables](#environment-variables)  
+- [Running the Project](#running-the-project)  
+- [Usage](#usage)  
+- [Contributing](#contributing)  
+- [License](#license)  
 
- 
- 
- 
- /sih-chatbot
-│
-├── /frontend                   # React app for the chat UI
-│   ├── /public                 # Public files (index.html, images, etc.)
-│   ├── /src                    # Source files for React components
-│   ├── Dockerfile              # Dockerfile for React app
-│   ├── package.json            # Dependencies for React app
-│   └── .env                    # Environment variables (if needed)
-│
-├── /backend                    # FastAPI backend
-│   ├── /app                    # FastAPI source code (API logic)
-│   ├── /models                 # Backend models (user, KB, etc.)
-│   ├── /data                   # Directory for storing documents/PDFs, etc.
-│   ├── Dockerfile              # Dockerfile for FastAPI backend
-│   ├── requirements.txt        # Python dependencies (FastAPI, etc.)
-│   ├── .env                    # Environment variables (MongoDB URI, etc.)
-│   └── main.py                 # Entry point for FastAPI
-│
-├── /docker-compose.yml         # Docker Compose file to link frontend and backend
-├── /docs                       # Documentation (README, API docs, etc.)
-├── /logs                       # Logs directory (for development/testing)
-└── /scripts                    # Utility scripts (data ingestion, etc.)
+---
 
+## Project Overview
+
+SIH Chatbot is a modern, modular chatbot system capable of:
+
+- Parsing documents in multiple formats (PDF, Word, Excel, PowerPoint)  
+- Providing conversational AI responses using **Google Gemini** models  
+- Storing and retrieving knowledge vectors for RAG (Retrieval-Augmented Generation) workflows  
+- Supporting multilingual text-to-speech and speech-to-text via browser APIs  
+
+The system is designed for both **local development** and **Docker-based deployment**.
+
+---
+
+## Features
+
+- **Document Ingestion**: Upload PDFs, Word docs, PowerPoint presentations, and Excel sheets  
+- **Knowledge Base**: Vector database storage and semantic search  
+- **Conversational AI**: Gemini model integration for natural language understanding and generation  
+- **Voice Support**: Text-to-speech and speech recognition  
+- **Web Interface**: Frontend built with React for an intuitive chat experience  
+- **Modular Backend**: Python FastAPI backend with structured services and routes  
+
+---
+
+## Technology Stack
+
+**Frontend**  
+- React  
+- TypeScript  
+- Tailwind CSS  
+
+**Backend**  
+- Python 3.11  
+- FastAPI  
+- SQL/Vector DB (pluggable)  
+- File parsing libraries: `pdf.js`, `mammoth`, `xlsx`, `jszip`  
+
+**AI Integration**  
+- Google Gemini API (`gemini-2.5-flash`)  
+
+**Other Tools**  
+- Docker & Docker Compose  
+- Git for version control  
+- VS Code recommended  
+
+---
+
+## Project Structure
+
+```
 sih-chatbot/
 ├── backend/
-│   ├── app/
-│   │   ├── main.py
-│   │   └── __pycache__/
-│   ├── data/
-│   ├── modules/
-│   ├── venv/
-│   ├── .gitignore
-│   ├── Dockerfile
-│   └── requirements.txt
-│
+│ ├── app/
+│ │ ├── controllers/
+│ │ ├── db/
+│ │ ├── models/
+│ │ ├── routes/
+│ │ ├── services/
+│ │ └── utils/
+│ ├── Dockerfile
+│ ├── requirements.txt
+│ └── .dockerignore
 ├── frontend/
-│   ├── public/
-│   ├── src/
-│   ├── node_modules/
-│   ├── Dockerfile
-│   ├── package.json
-│   └── package-lock.json
-│
-├── logs/
-├── scripts/
+│ ├── src/
+│ ├── public/
+│ ├── package.json
+│ └── .dockerignore
 ├── docs/
-├── .dockerignore
+├── scripts/
+├── logs/
 ├── .env
-└── docker-compose.yml
+├── docker-compose.yml
+├── .gitignore
+└── README.md
+```
 
+---
 
+## Setup & Installation
 
-app/
- ├── main.py
- ├── routes/
- │    ├── __init__.py
- │    └── chat_routes.py
- ├── models/
- │    ├── __init__.py
- │    └── message_model.py
- ├── db/
- │    └── connection.py
- ├── utils/
- │    └── helpers.py
- ├── config.py
- └── __init__.py
+### Prerequisites
 
+- Python 3.11+  
+- Node.js & npm/yarn  
+- Google Gemini API Key  
+- Docker (optional, for containerized setup)  
 
+### Steps
 
-frontend/
- ├── src/
- │    ├── components/
- │    ├── pages/
- │    │    └── Chat.jsx
- │    ├── App.js
- │    └── api.js
- ├── package.json
- └── Dockerfile
+1. Clone the repository:
 
-
-
-mkdir sih-chatbot
+```bash
+git clone <repo-url>
 cd sih-chatbot
-mkdir frontend backend docs scripts logs
+```
+2. Create a virtual environment for Python:
 
+```bash
+python -m venv backend/venv
+source backend/venv/bin/activate  # Linux/Mac
+backend\venv\Scripts\activate     # Windows
+```
+3. Install Python dependencies:
+
+```bash
+pip install -r backend/requirements.txt
+```
+4. Install frontend dependencies:
+
+```bash
 cd frontend
-npx create-react-app .
-npm install tailwindcss # Install tailwind if you want to use it
+npm install
+```
+5. Copy .env.example to .env and set your API keys and configuration.
 
-Create backend folder structure (FastAPI app):
+## Environment Variables
+
+Create .env in the root folder with:
+```
+GEMINI_API_KEY=<your-google-gemini-api-key>
+DATABASE_URL=<your-database-url>
+PORT=8000
+```
+Other optional configs can be added depending on your backend services.
+
+## Running the Project
+### Option 1: Local Development
+Backend:
+```
 cd backend
-python3 -m venv venv
-source venv/bin/activate  # For macOS/Linux
-venv\Scripts\activate     # For Windows
+uvicorn app.main:app --reload
+```
 
-Install FastAPI and other dependencies:
-pip install fastapi uvicorn pymongo sentence-transformers faiss-cpu openpyxl python-dotenv
-pip freeze > requirements.txt
-pip list
+Frontend:
+```
+cd frontend
+npm start
+```
 
+Visit http://localhost:3000 for the frontend interface.
 
-Create the folder structure:
-mkdir app models data
-touch app/main.py requirements.txt
+## Option 2: Docker
+```
+docker-compose up --build
+```
 
+ - Backend will run on port 8000
+ - Frontend on port 3000
 
-WSL
-------------------------------------------
-new terminal
-v - dropdown
-select ubuntu
+### Usage
+- Upload a document (PDF, Word, Excel, PowerPoint)
+- Chat with the AI, ask questions about the documents
+- Use voice input or output if supported in your browser
 
-Docker
------------------------------------------------
-Step 1:Build the containers
-docker compose build
-This will build both frontend and backend images based on the Dockerfiles we created.
-First time may take a few minutes because it installs dependencies and builds the React app.
+### Contributing
+- Fork the repository
+- Create a new feature branch
+- Commit changes with descriptive messages
+- Push branch and open a pull request
 
-Step 2: Start the containers
-docker compose up
-This starts both frontend (Nginx) and backend (FastAPI) containers.
-You’ll see logs from both services in your terminal.
-Notes:
-Press CTRL+C to stop the containers in this terminal.
-To run in detached mode (background), use:
-docker compose up -d
+### License
+MIT License © 2025 Tejaswi Devarapalli
 
-
-docker compose up -d  ------ container runes even if the terminal is closed 
-docker compose down ------- to stop container
-
-✅ Summary:
-
-Action	Command
-Build new images (if Dockerfile or dependencies change) ---	docker compose build
-Start containers ---	docker compose up -d
-View running containers ---	docker ps
-View logs ---	docker compose logs -f
-Stop containers	 --- docker compose down
